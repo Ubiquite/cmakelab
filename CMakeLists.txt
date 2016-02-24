@@ -4,8 +4,8 @@ project(develab)
 
   add_library(IVS_sqlite INTERFACE IMPORTED GLOBAL)
 
-  set(root_dir D:/dvp/Activisu/third_party/sqlite-vc12-3.8.9/)
-  set_property(TARGET IVS_sqlite PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${root_dir}/include )
+  set(root_dir /opt/ivs/third_party/sqlite-macos-3.8.11.1/ )
+  set_property(TARGET IVS_sqlite PROPERTY INTERFACE_SYSTEM_INCLUDE_DIRECTORIES ${root_dir}/include )
   set_property(TARGET IVS_sqlite PROPERTY INTERFACE_LINK_LIBRARIES ${root_dir}/lib/sdsqlite$<$<CONFIG:Debug>:d>.lib ${root_dir}/lib/sqlite$<$<CONFIG:Debug>:d>.lib )
   
 
