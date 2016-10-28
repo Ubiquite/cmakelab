@@ -1,14 +1,36 @@
-cmake_minimum_required (VERSION 3.3.1)
+cmake_minimum_required (VERSION 3.0.2)
+
+include("HunterGate.cmake")
+
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.16.15.tar.gz"
+    SHA1 "6974c2150fc0d3b09de3ad1efcbf15d360647ffa"
+    LOCAL #load cmake/Hunter/config.cmake
+)
 
 project(develab)
 
-  add_library(IVS_sqlite INTERFACE IMPORTED GLOBAL)
+hunter_add_package(freetype)
 
-  set(root_dir D:/dvp/Activisu/third_party/sqlite-vc12-3.8.9/)
-  set_property(TARGET IVS_sqlite PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${root_dir}/include )
-  set_property(TARGET IVS_sqlite PROPERTY INTERFACE_LINK_LIBRARIES ${root_dir}/lib/sdsqlite$<$<CONFIG:Debug>:d>.lib ${root_dir}/lib/sqlite$<$<CONFIG:Debug>:d>.lib )
-  
+find_package(freetype CONFIG REQUIRED)
 
-add_library(dd STATIC main.cpp)
+hunter_add_package(Jpeg)
+hunter_add_package(OpenCV)
+find_package(OpenCV CONFIG REQUIRED)
 
-target_link_libraries(dd IVS_sqlite)
+add_library(lib1 STATIC lib1.cpp)
+target_include_directories(lib1 PUBLIC include1)
+target_include_directories(lib1 SYSTEM PUBLIC system1)
+target_link_libraries(lib1 PUBLIC lib2)
+
+add_library(lib2 STATIC lib2.cpp)
+target_include_directories(lib2 PUBLIC include2)
+target_include_directories(lib2 SYSTEM PUBLIC system2)
+target_link_libraries(lib2 PUBLIC lib3 freetype::freetype)
+
+add_library(lib3 STATIC lib3.cpp)
+target_include_directories(lib3 PUBLIC include3)
+target_include_directories(lib3 SYSTEM PUBLIC system3)
+
+add_executable(exe1 main.cpp)
+target_link_libraries(exe1 lib1)
